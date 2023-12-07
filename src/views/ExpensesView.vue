@@ -25,7 +25,7 @@
         <td>{{ expense.description }}</td>
         <td>
           <v-btn variant="text" @click="edit(expense)">Edit</v-btn>
-          <v-btn variant="text" @click="remove(expense)">Delete</v-btn>
+          <v-btn color="red" variant="text" @click="remove(expense)">Delete</v-btn>
         </td>
       </tr>
     </tbody>
@@ -150,4 +150,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+tr td:last-child {
+    width: 1%;
+    white-space: nowrap;
+}
+</style>

@@ -23,8 +23,8 @@
           <td>{{ user.fullName }}</td>
           <td>{{ formatCurrency(calculateUserTotal(user)) }}</td>
           <td>
-            <v-btn variant="text" @click="edit(user)">Edit</v-btn>
-            <v-btn variant="text" @click="remove(user)">Delete</v-btn>
+            <v-btn color="" variant="text" @click="edit(user)">Edit</v-btn>
+            <v-btn color="red" variant="text" @click="remove(user)">Delete</v-btn>
           </td>
         </tr>
       </tbody>
@@ -121,4 +121,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+tr td:last-child {
+    width: 1%;
+    white-space: nowrap;
+}
+</style>
