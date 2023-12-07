@@ -1,24 +1,17 @@
 <template>
-<div>
-  <h1>Users</h1>
-
-</div>
+  <div>
+    <h1>Users</h1>
+  </div>
 </template>
 
 <script>
-import { mapState } from 'pinia';
-import { useUsersStore } from '@/stores/users';
+import { mapState } from 'pinia'
+import { useUsersStore } from '@/stores/users'
 
 export default {
-  computed: {
-      
-  },
-  methods: {
-
-  }
+  computed: {},
+  methods: {}
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
