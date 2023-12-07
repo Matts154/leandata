@@ -20,7 +20,7 @@
       </thead>
       <tbody>
         <tr v-for="user of users" :key="user.accountId">
-          <td>{{ user.firstName }} {{ user.lastName }}</td>
+          <td>{{ user.fullName }}</td>
           <td>{{ formatCurrency(calculateUserTotal(user)) }}</td>
           <td>
             <v-btn variant="text" @click="edit(user)">Edit</v-btn>
