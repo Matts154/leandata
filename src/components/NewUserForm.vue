@@ -1,17 +1,34 @@
 <template>
-  <div>
-    <form @submit.prevent="submit">
-        <div>
-            <label for="firstName">First Name</label>
-            <input required type="text" name="firstName" v-model="firstName" />
-        </div>
-        <div>
-            <label for="lastName">Last Name</label>
-            <input required type="text" name="lastName" v-model="lastName" />
-        </div>
-        <button type="submit">Submit</button>
-    </form>
-  </div>
+  <v-form v-model="valid" @submit.prevent>
+    <v-container>
+      <v-row>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-text-field
+            v-model="firstName"
+            label="First name"
+            required
+          ></v-text-field>
+        </v-col>
+
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-text-field
+            v-model="lastName"
+            label="Last name"
+            required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-btn type="submit" class="mt-2">Submit</v-btn>
+      </v-row>
+    </v-container>
+  </v-form>
 </template>
 
 <script>
@@ -21,6 +38,7 @@ import { mapActions } from 'pinia';
 export default {
     data: () => {
         return {
+            valid: false,
             firstName: '',
             lastName: '',
         };
