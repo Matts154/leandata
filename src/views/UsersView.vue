@@ -13,26 +13,27 @@
     <v-table fixed-header height="300px">
       <thead>
         <tr>
-          <th class="text-left">First Name</th>
-          <th class="text-left">Last Name</th>
+          <th class="text-left">Name</th>
           <th class="text-left">Total</th>
           <th class="text-left">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users" :key="user.guid">
-          <td>{{ user.firstName }}</td>
-          <td>{{ user.lastName }}</td>
-          <td>{{ formatCurrency(1000) }}</td>
-          <td><v-btn>View</v-btn></td>
+        <tr v-for="user of users" :key="user.accountId">
+          <td>{{ user.firstName }} {{ user.lastName }}</td>
+          <td>{{ formatCurrency(calculateTotal(user)) }}</td>
+          <td>
+            <v-btn variant="text" @click="edit(user)">Edit</v-btn>
+            <v-btn variant="text" @click="remove(user)">Delete</v-btn>
+          </td>
         </tr>
       </tbody>
     </v-table>
 
-    <v-dialog v-model="dialog" width="500px">
+    <v-dialog v-model="visible" width="500px">
       <v-card>
         <v-card-text>
-          <v-form fast-fail v-model="valid" @submit.prevent="submit">
+          <v-form v-model="valid" @submit.prevent="submit">
             <v-container>
               <v-row>
                 <v-col>
@@ -65,45 +66,59 @@
 <script>
 import { mapActions, mapState } from 'pinia'
 import { useUsersStore } from '@/stores/users'
+import { useExpensesStore } from '@/stores/expenses'
+import formatCurrency from '@/mixins/formatCurrency'
 
 export default {
+  mixins: [formatCurrency],
   data: () => {
     return {
-      dialog: false,
+      visible: false,
       valid: false,
+      accountId: '',
       firstName: '',
       lastName: '',
       rules: [(value) => Boolean(value) || 'Name is required.']
     }
   },
   computed: {
-    ...mapState(useUsersStore, ['users'])
+    ...mapState(useUsersStore, ['users']),
+    ...mapState(useExpensesStore, ['userTotals'])
   },
   methods: {
-    ...mapActions(useUsersStore, ['create']),
+    ...mapActions(useUsersStore, ['create', 'update', 'remove']),
+    edit({ firstName, lastName, accountId }) {
+      this.accountId = accountId
+      this.firstName = firstName
+      this.lastName = lastName
+
+      this.toggleDialog()
+    },
     submit() {
-      if (!this.valid) return
+      const { valid, accountId, firstName, lastName } = this
 
-      const { firstName, lastName } = this
+      if (!valid) return
 
-      this.create(firstName, lastName)
+      if (accountId) {
+        this.update({ accountId, firstName, lastName })
+      } else {
+        this.create({ firstName, lastName })
+      }
+
       this.toggleDialog(false)
     },
     toggleDialog(value) {
-      this.dialog = value || !this.dialog
-      if (!this.dialog) this.clearDialog()
+      this.visible = value || !this.visible
+      if (!this.visible) this.clearDialog()
     },
     clearDialog() {
+      this.accountId = ''
       this.firstName = ''
       this.lastName = ''
     },
-    formatCurrency(number) {
-      const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      })
-
-      return formatter.format(number)
+    calculateTotal(user) {
+      const userTypeTotals = this.userTotals[user.accountId]
+      return Object.values(userTypeTotals).reduce((total, value) => total + value, 0)
     }
   }
 }
