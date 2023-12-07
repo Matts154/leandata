@@ -152,7 +152,7 @@ export default {
 
 <style scoped>
 tr td:last-child {
-    width: 1%;
-    white-space: nowrap;
+  width: 1%;
+  white-space: nowrap;
 }
 </style>

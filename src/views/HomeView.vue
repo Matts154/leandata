@@ -8,7 +8,10 @@
       </v-row>
       <v-row>
         <v-col>
-          <p>Create a web application that allows you to manage users and expenses for each user. You can use any front-end framework and library to complete this assignment.</p>
+          <p>
+            Create a web application that allows you to manage users and expenses for each user. You
+            can use any front-end framework and library to complete this assignment.
+          </p>
         </v-col>
       </v-row>
     </v-container>

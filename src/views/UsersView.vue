@@ -116,14 +116,14 @@ export default {
       this.accountId = ''
       this.firstName = ''
       this.lastName = ''
-    },
+    }
   }
 }
 </script>
 
 <style scoped>
 tr td:last-child {
-    width: 1%;
-    white-space: nowrap;
+  width: 1%;
+  white-space: nowrap;
 }
 </style>

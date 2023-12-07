@@ -28,7 +28,7 @@ import calculateTotal from '@/mixins/calculateTotal'
 import formatCurrency from '@/mixins/formatCurrency'
 
 export default {
-  mixins:[formatCurrency, calculateTotal],
+  mixins: [formatCurrency, calculateTotal],
   computed: {
     ...mapState(useExpensesStore, ['typeTotals'])
   }
