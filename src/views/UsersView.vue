@@ -21,7 +21,7 @@
       <tbody>
         <tr v-for="user of users" :key="user.accountId">
           <td>{{ user.firstName }} {{ user.lastName }}</td>
-          <td>{{ formatCurrency(calculateTotal(user)) }}</td>
+          <td>{{ formatCurrency(calculateUserTotal(user)) }}</td>
           <td>
             <v-btn variant="text" @click="edit(user)">Edit</v-btn>
             <v-btn variant="text" @click="remove(user)">Delete</v-btn>
@@ -68,9 +68,10 @@ import { mapActions, mapState } from 'pinia'
 import { useUsersStore } from '@/stores/users'
 import { useExpensesStore } from '@/stores/expenses'
 import formatCurrency from '@/mixins/formatCurrency'
+import calculateTotal from '@/mixins/calculateTotal'
 
 export default {
-  mixins: [formatCurrency],
+  mixins: [formatCurrency, calculateTotal],
   data: () => {
     return {
       visible: false,
@@ -116,10 +117,6 @@ export default {
       this.firstName = ''
       this.lastName = ''
     },
-    calculateTotal(user) {
-      const userTypeTotals = this.userTotals[user.accountId]
-      return Object.values(userTypeTotals).reduce((total, value) => total + value, 0)
-    }
   }
 }
 </script>

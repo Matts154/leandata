@@ -42,9 +42,15 @@ const useExpensesStore = defineStore('expenses', {
         (expense) => expense.expenseId === expenseId
       )
 
+      this.userTotals[accountId][expense.type] -= expense.amount
+      this.typeTotals[expense.type] -= expense.amount
+
       expense.type = type
       expense.amount = amount
       expense.description = description
+
+      this.userTotals[accountId][type] += amount
+      this.typeTotals[type] += amount
 
       return expense
     },
