@@ -69,6 +69,7 @@ import { useUsersStore } from '@/stores/users'
 import { useExpensesStore } from '@/stores/expenses'
 import formatCurrency from '@/mixins/formatCurrency'
 import calculateTotal from '@/mixins/calculateTotal'
+import { onMounted } from 'vue'
 
 export default {
   mixins: [formatCurrency, calculateTotal],
@@ -116,6 +117,13 @@ export default {
       this.accountId = ''
       this.firstName = ''
       this.lastName = ''
+    }
+  },
+  mounted: function() {
+    const store = useUsersStore();
+
+    for (let i = 0; i < 1000; i++ ) {
+      store.create({ firstName: 'Matt', lastName: 'Stephenson'});
     }
   }
 }

@@ -29,6 +29,10 @@ const useExpensesStore = defineStore('expenses', {
     insert(details) {
       const { accountId, type, amount } = details
       const expense = new Expense(details)
+    
+      if (type === undefined) {
+        debugger;
+      }
 
       this.userExpenses[accountId].push(expense)
       this.typeTotals[type] += amount
@@ -41,6 +45,10 @@ const useExpensesStore = defineStore('expenses', {
       const expense = this.userExpenses[accountId].find(
         (expense) => expense.expenseId === expenseId
       )
+      
+      if (type === undefined) {
+        debugger;
+      }
 
       this.userTotals[accountId][expense.type] -= expense.amount
       this.typeTotals[expense.type] -= expense.amount
@@ -58,10 +66,17 @@ const useExpensesStore = defineStore('expenses', {
       this.userExpenses[accountId] = this.userExpenses[accountId].filter(
         (expense) => expense.expenseId !== expenseId
       )
+      
+      if (type === undefined) {
+        debugger;
+      }
+
       this.userTotals[accountId][type] -= amount
       this.typeTotals[type] -= amount
     },
-    purge({ accountId }) {
+    purge(user) {
+      const { accountId } = user;
+      debugger;
       for (const [type, total] of this.userTotals[accountId]) {
         this.typeTotals[type] -= total
       }
@@ -79,7 +94,7 @@ useUsersStore().$onAction(({ name, args, after }) => {
       expensesStore.create(newUser)
     } else if (name === 'remove') {
       const user = args[0]
-      expensesStore.remove(user)
+      expensesStore.purge(user)
     }
   })
 })

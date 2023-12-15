@@ -12,6 +12,7 @@
   <v-table fixed-header height="300px">
     <thead>
       <tr>
+        <th class="text-left">User name</th>
         <th class="text-left">Type</th>
         <th class="text-left">Amount</th>
         <th class="text-left">Description</th>
@@ -20,6 +21,7 @@
     </thead>
     <tbody>
       <tr v-for="expense in expenses" :key="expense.expenseId">
+        <td>{{ users[expense.accountId].fullName }}</td>
         <td>{{ expense.type }}</td>
         <td>{{ formatCurrency(expense.amount) }}</td>
         <td>{{ expense.description }}</td>
@@ -146,6 +148,22 @@ export default {
       this.expenseId = null
       this.accountId = null
     }
+  },
+  mounted: function() {
+    const store = useExpensesStore();
+
+    console.time('all expense insert');
+    for (let user in this.users) {
+      for (let i = 0; i < 100; i++) {
+        store.insert({
+          accountId: user,
+          type: 'software',
+          amount: 1,
+          description: 'Test expense',
+        });
+      }
+    }
+    console.timeEnd('all expense insert');
   }
 }
 </script>
