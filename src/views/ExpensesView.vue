@@ -12,6 +12,7 @@
   <v-table fixed-header height="300px">
     <thead>
       <tr>
+        <th class="text-left">User</th>
         <th class="text-left">Type</th>
         <th class="text-left">Amount</th>
         <th class="text-left">Description</th>
@@ -20,6 +21,7 @@
     </thead>
     <tbody>
       <tr v-for="expense in expenses" :key="expense.expenseId">
+        <td>{{ users[expense.accountId].fullName }}</td>
         <td>{{ expense.type }}</td>
         <td>{{ formatCurrency(expense.amount) }}</td>
         <td>{{ expense.description }}</td>
