@@ -74,7 +74,7 @@ export default {
 
     const types = ['software', 'meals', 'travel'];
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 1000; i++) {
       const user = this.createUser({ firstName: faker.person.firstName(), lastName: faker.person.lastName() });
 
       for (let j = 0; j < 5; j++) {

@@ -20,7 +20,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="expense in expenses" :key="expense.expenseId">
+      <tr v-for="expense of paginatedExpenses" :key="expense.expenseId">
         <td>{{ users[expense.accountId].fullName }}</td>
         <td>{{ expense.type }}</td>
         <td>{{ formatCurrency(expense.amount) }}</td>
@@ -32,6 +32,11 @@
       </tr>
     </tbody>
   </v-table>
+  <v-pagination
+    v-model="page"
+    :length="totalPages"
+    rounded="circle"
+  ></v-pagination>
 
   <v-dialog v-model="dialog" width="500px">
     <v-card>
@@ -86,11 +91,14 @@ import { mapActions, mapState } from 'pinia'
 import { useUsersStore } from '@/stores/users'
 import { useExpensesStore } from '@/stores/expenses'
 import formatCurrency from '@/mixins/formatCurrency'
+import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
 
 export default {
   mixins: [formatCurrency],
   data() {
     return {
+      page: 1,
+      perPage: 5,
       valid: false,
       dialog: false,
       expenseId: null,
@@ -111,7 +119,16 @@ export default {
   },
   computed: {
     ...mapState(useUsersStore, ['users']),
-    ...mapState(useExpensesStore, ['expenses', 'userExpenses', 'userTotals'])
+    ...mapState(useExpensesStore, ['expenses', 'userExpenses', 'userTotals']),
+    paginatedExpenses: function () {
+      const min = (this.page - 1) * this.perPage;
+      const max = (this.page) * this.perPage;
+
+      return this.expenses.slice(min, max);
+    },
+    totalPages: function() {
+      return Math.ceil(this.expenses.length / this.perPage);
+    },
   },
   methods: {
     ...mapActions(useExpensesStore, ['insert', 'update', 'remove']),
@@ -156,5 +173,11 @@ export default {
 tr td:last-child {
   width: 1%;
   white-space: nowrap;
+}
+.mdi-chevron-left::before {
+  content: '<'
+}
+.mdi-chevron-right::before {
+  content: '>'
 }
 </style>
