@@ -19,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user of users" :key="user.accountId">
+        <tr v-for="user in paginatedUsers" :key="user.accountId">
           <td>{{ user.fullName }}</td>
           <td>{{ formatCurrency(calculateUserTotal(user)) }}</td>
           <td>
@@ -29,6 +29,12 @@
         </tr>
       </tbody>
     </v-table>
+
+    <v-pagination
+      v-model="page"
+      :length="totalPages"
+      rounded="circle"
+    ></v-pagination>
 
     <v-dialog v-model="visible" width="500px">
       <v-card>
@@ -69,11 +75,14 @@ import { useUsersStore } from '@/stores/users'
 import { useExpensesStore } from '@/stores/expenses'
 import formatCurrency from '@/mixins/formatCurrency'
 import calculateTotal from '@/mixins/calculateTotal'
+import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
 
 export default {
   mixins: [formatCurrency, calculateTotal],
   data: () => {
     return {
+      page: 1,
+      perPage: 5,
       visible: false,
       valid: false,
       accountId: '',
@@ -84,7 +93,17 @@ export default {
   },
   computed: {
     ...mapState(useUsersStore, ['users']),
-    ...mapState(useExpensesStore, ['userTotals'])
+    ...mapState(useExpensesStore, ['userTotals']),
+    paginatedUsers: function () {
+      const min = (this.page - 1) * this.perPage;
+      const max = (this.page) * this.perPage;
+      const users = Object.values(this.users);
+
+      return users.slice(min, max);
+    },
+    totalPages: function () {
+      return Math.ceil(Object.keys(this.users).length / this.perPage);
+    },
   },
   methods: {
     ...mapActions(useUsersStore, ['create', 'update', 'remove']),

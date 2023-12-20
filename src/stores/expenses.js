@@ -62,26 +62,14 @@ const useExpensesStore = defineStore('expenses', {
       this.typeTotals[type] -= amount
     },
     purge({ accountId }) {
-      for (const [type, total] of this.userTotals[accountId]) {
-        this.typeTotals[type] -= total
+      for (const type in this.userTotals[accountId]) {
+        const userTotal = this.userTotals[accountId][type];
+        this.typeTotals[type] -= userTotal
       }
       delete this.userExpenses[accountId]
       delete this.userTotals[accountId]
     }
   }
-})
-
-useUsersStore().$onAction(({ name, args, after }) => {
-  after((newUser) => {
-    const expensesStore = useExpensesStore()
-
-    if (name === 'create') {
-      expensesStore.create(newUser)
-    } else if (name === 'remove') {
-      const user = args[0]
-      expensesStore.remove(user)
-    }
-  })
 })
 
 export { useExpensesStore }
