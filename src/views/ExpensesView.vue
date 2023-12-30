@@ -91,7 +91,6 @@ import { mapActions, mapState } from 'pinia'
 import { useUsersStore } from '@/stores/users'
 import { useExpensesStore } from '@/stores/expenses'
 import formatCurrency from '@/mixins/formatCurrency'
-import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
 
 export default {
   mixins: [formatCurrency],

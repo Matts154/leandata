@@ -75,7 +75,6 @@ import { useUsersStore } from '@/stores/users'
 import { useExpensesStore } from '@/stores/expenses'
 import formatCurrency from '@/mixins/formatCurrency'
 import calculateTotal from '@/mixins/calculateTotal'
-import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
 
 export default {
   mixins: [formatCurrency, calculateTotal],
